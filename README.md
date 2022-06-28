@@ -4,9 +4,9 @@ See a guide on how to unlock the digikey spark Rev 3.0 [here](https://www.instru
 
 I did the high voltage programming example with a PC817 Octoupler.
 
-Then I had to install this core for the attiny85 [here](https://github.com/SpenceKonde/ATTinyCore/blob/master/Installation.md). Then the ISP example first flashing bootloader at 8mhz.
+Then I had to install this core for the attiny85. I used AtTiny core from SpenceKonde (here)[https://github.com/SpenceKonde/ATTinyCore/]. Then the ISP example first flashing bootloader at 8mhz.
 
-Used tiny i2c [here](https://github.com/technoblogy/tiny-i2c), and 4k oled [here](https://github.com/datacute/Tiny4kOLED). 
+Used tiny i2c from adafruit, and 4k oled [here](https://github.com/datacute/Tiny4kOLED). 
 
 ## Rev 1.0
 This was a project I did for a friend who works in software. I thought it could be fun for them to visualize days without an incident, and maybe they can talk the boss into a pizza party when the days make it past milestones! You can find a video demo [here](https://www.youtube.com/shorts/DNOm6Y0vupc).  
