@@ -1,0 +1,13 @@
+issues with design
+
+usb port not far enough
+
+header ports not spaced like arduino
+
+some of the oled screens i have have vcc and ground flipped, some dont.
+
+leds not going all the way down. probably because holes are too big and too far apart...
+
+colors of led when i do by hsv doesnt match expectations. tbd, test RGB. So it seems need to add as RGB to get that working...
+CRGB leds[NUM_LEDS];
+FastLED.addLeds<WS2812B, LED_PIN, RGB>(leds, NUM_LEDS)
