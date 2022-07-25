@@ -15,7 +15,7 @@ void setup() {
   while (leds::do_circle_animation())
   {
     oled_display::cycle_startup_oled_animation();
-    delay(50);
+    delay(20);
   }
 
   oled_display::display_info(DAYS_COUNTER, leds::get_night_mode());

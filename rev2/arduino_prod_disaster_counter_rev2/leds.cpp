@@ -86,7 +86,7 @@ namespace leds
   bool do_circle_animation()
   {
     
-    if (millis() - led_working_mem.last_led_flip_time > led_settings.led_cycle_delay)
+    if (millis() - led_working_mem.last_led_flip_time > led_settings.led_circle_cycle_delay)
     {
       // turn off prior led
       if (led_working_mem.led_iterator > 0)
@@ -119,14 +119,14 @@ namespace leds
         {
           FastLED.setBrightness(led_settings.day_mode_brightness - j * 2);
           FastLED.show();
-          delay(led_settings.led_cycle_delay);
+          delay(led_settings.led_celebration_cycle_delay);
         }
 
         for (int j = 50; j >= 0; j--)
         {
           FastLED.setBrightness(led_settings.day_mode_brightness - j * 2);
           FastLED.show();
-          delay(led_settings.led_cycle_delay);
+          delay(led_settings.led_celebration_cycle_delay);
         }
       }
       FastLED.clear();
@@ -149,7 +149,7 @@ namespace leds
         FastLED.clear();
         leds[led_working_mem.led_iterator].setHSV(led_working_mem.hsv_color.hue, led_working_mem.hsv_color.saturation, led_working_mem.hsv_color.value);
         FastLED.show();
-        delay(led_settings.led_cycle_delay);
+        delay(led_settings.led_celebration_cycle_delay);
       }
       led_working_mem.hsv_color.hue += led_settings.hue_step;
     }

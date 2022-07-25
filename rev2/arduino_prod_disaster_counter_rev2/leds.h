@@ -11,7 +11,8 @@ namespace leds
   struct led_settings_t
   {
     const byte hue_step = 20;
-    const byte led_cycle_delay = 20;
+    const byte led_celebration_cycle_delay = 20;
+    const byte led_circle_cycle_delay = 100;
     const int min_saturation = 150;
     const int max_saturation = 256;
     const byte night_mode_brightness = 20;
