@@ -4,18 +4,19 @@
 #include <FastLED.h>
 
 #include "pin_mapping.h"
-#include "oled_display.h"
 
 namespace leds
 {
 
   struct led_settings_t
   {
-    const byte brightness = 200;
     const byte hue_step = 20;
-    const byte led_cycle_delay = 50;
+    const byte led_cycle_delay = 20;
     const int min_saturation = 150;
     const int max_saturation = 256;
+    const byte night_mode_brightness = 20;
+    const byte day_mode_brightness = 200;
+    byte startup_hue_iteration_move = 4;
   };
 
   struct led_working_mem_t
@@ -23,6 +24,13 @@ namespace leds
     CHSV hsv_color;
     byte ending_hsv_hue;
     byte led_iterator;
+    bool night_mode;
+    // used for startup circle animation
+    unsigned long start_time;
+    unsigned long last_led_flip_time;
+    byte startup_ending_led;
+    bool exit_flag;
+    byte ending_led;
   };
 
   const static int hue_increment_value = 20;
@@ -39,10 +47,12 @@ namespace leds
   static CRGB leds[NUM_LEDS];
 
   void setup_leds();
+  bool get_night_mode();
 
   void do_mini_celebration();
-  void do_startup_greeting();
+  bool do_circle_animation();
 
+  void toggle_night_mode();
   
   void update_led_counter(const unsigned int & days_counter);
     

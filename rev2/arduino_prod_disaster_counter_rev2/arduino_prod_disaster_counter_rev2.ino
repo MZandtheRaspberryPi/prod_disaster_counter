@@ -9,11 +9,16 @@ void handle_button_press(const int& button_state, unsigned int& days_counter);
 
 void setup() {
   buttons::setup_buttons();
-  //setup_display();
   oled_display::setup_display();
   leds::setup_leds();
-  leds::do_startup_greeting();
-  oled_display::display_info(DAYS_COUNTER);
+  
+  while (leds::do_circle_animation())
+  {
+    oled_display::cycle_startup_oled_animation();
+    delay(50);
+  }
+
+  oled_display::display_info(DAYS_COUNTER, leds::get_night_mode());
 
 }
 
@@ -29,16 +34,18 @@ void handle_button_press(const int& button_state, unsigned int& days_counter)
   {
     case 1:
       days_counter++;
+      oled_display::display_congrats();
       leds::do_mini_celebration();
-      oled_display::display_info(days_counter);
-      leds::update_led_counter(days_counter);
       break;
     case 2:
+      leds::toggle_night_mode();
+      break;
+    case 3:
       days_counter = 0;
-      oled_display::display_info(days_counter);
-      leds::update_led_counter(days_counter);
       break;
     default:
       break;
   }
+  oled_display::display_info(days_counter, leds::get_night_mode());
+  leds::update_led_counter(days_counter);
 }

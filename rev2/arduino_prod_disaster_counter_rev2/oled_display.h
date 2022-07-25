@@ -12,12 +12,10 @@ namespace oled_display
 void setup_display();
 void display_header_row();
 void display_counter_row(const int& days_without_incident);
-void display_info(const unsigned int& days_without_incident);
+void display_info(const unsigned int& days_without_incident, const bool& night_mode);
 void display_congrats();
 void cycle_startup_oled_animation();
 void clear_display();
-void switch_frame();
-
 static byte x_position = 50;
 static byte y_position = 0;
 static byte bitmap_counter = 0;
@@ -100,6 +98,12 @@ const static unsigned char* epd_bitmap_allArray[6] = {
   epd_bitmap_flower_30,
   epd_bitmap_flower_40,
   epd_bitmap_flower_50
+};
+
+// 'moon', 16x16px
+const unsigned char epd_bitmap_moon [] PROGMEM = {
+  0x00, 0x00, 0x00, 0xc0, 0x70, 0x18, 0x0c, 0x7c, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+  0x00, 0x00, 0x00, 0x07, 0x1e, 0x30, 0x20, 0x60, 0x41, 0x43, 0x66, 0x2c, 0x38, 0x18, 0x00, 0x00
 };
 
 } // end namespace oled_display

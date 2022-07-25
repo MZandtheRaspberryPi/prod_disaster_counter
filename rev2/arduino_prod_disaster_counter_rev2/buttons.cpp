@@ -22,16 +22,24 @@ namespace buttons
       {
         delay(10);
       }
-  
-      if (millis() - button_working_mem.start_button_press > button_settings.button_press_threshold_1)
-      {
-        return 2;
-      }
-      else
+      button_working_mem.button_press_length = millis() - button_working_mem.start_button_press;
+      if (button_working_mem.button_press_length < button_settings.button_press_threshold_1)
       {
         return 1;
       }
-  
+      else if (button_working_mem.button_press_length >= button_settings.button_press_threshold_1
+      && button_working_mem.button_press_length < button_settings.button_press_threshold_2)
+      {
+        return 2;
+      }
+      else if (button_working_mem.button_press_length >= button_settings.button_press_threshold_2)
+      {
+        return 3;
+      }
+      else
+      {
+        return 0;  
+      }
     }
     else
     {

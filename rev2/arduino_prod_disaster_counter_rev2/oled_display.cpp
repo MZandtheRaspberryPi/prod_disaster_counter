@@ -28,12 +28,16 @@ namespace oled_display
     oled.print(F("You're at: "));
     oled.print(days_without_incident);
   }
-  void display_info(const unsigned int& days_without_incident)
+  void display_info(const unsigned int& days_without_incident, const bool& night_mode)
   {
     // Clear the half of memory not currently being displayed.
     oled.clear();
     display_header_row();
     display_counter_row(days_without_incident);
+    if (night_mode)
+    {
+      oled.bitmap(111, 2, 127, 4, epd_bitmap_moon);
+    }
     oled.switchFrame();
   }
   
@@ -47,15 +51,12 @@ namespace oled_display
     oled.switchFrame();
   }
   
-void clear_display()
-{
-  oled.clear();
-}
-
-void switch_frame()
-{
-  oled.switchFrame();
-}
+  void clear_display()
+  {
+    oled.clear();
+    oled.switchFrame();
+  }
+  
   void cycle_startup_oled_animation()
   {
       oled.bitmap(x_position, y_position, x_position + size_bitmap_x, size_bitmap_y_num_pages, epd_bitmap_allArray[bitmap_counter]);

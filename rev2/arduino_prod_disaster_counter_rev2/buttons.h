@@ -12,6 +12,7 @@ namespace buttons
   {
     int button_state;
     unsigned long start_button_press;
+    unsigned long button_press_length;
   };
 
   struct button_settings_t

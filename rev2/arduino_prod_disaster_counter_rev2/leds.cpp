@@ -6,12 +6,39 @@ namespace leds
   void setup_leds()
   {
     FastLED.addLeds<WS2812B, pin_mapping::LED_PIN, RGB>(leds, NUM_LEDS);
-    FastLED.setBrightness(led_settings.brightness);
+    FastLED.setBrightness(led_settings.day_mode_brightness);
     FastLED.clear();
     FastLED.show();
     led_working_mem.hsv_color = startup_color_yellow;
+    led_working_mem.night_mode = false;
+
+    // this is for the startup led animation
+    led_working_mem.startup_ending_led = 9;
+    led_working_mem.exit_flag = false;
+    led_working_mem.start_time = millis();
+    led_working_mem.last_led_flip_time = millis();
+    led_working_mem.hsv_color = startup_color_yellow;
+    led_working_mem.led_iterator = 0;
+    led_working_mem.ending_led = 9;
   }
 
+  void toggle_night_mode()
+  {
+    led_working_mem.night_mode = !led_working_mem.night_mode;
+    if (led_working_mem.night_mode)
+    {
+      FastLED.setBrightness(led_settings.night_mode_brightness);
+    }
+    else
+    {
+      FastLED.setBrightness(led_settings.day_mode_brightness);
+    }
+  }
+
+  bool get_night_mode()
+  {
+    return led_working_mem.night_mode;
+  }
 
   void update_led_counter(const unsigned int & days_counter)
   {
@@ -55,95 +82,62 @@ namespace leds
     FastLED.show();
   }
 
-
-  
-  void do_startup_greeting()
+  // must call setup_leds before this
+  bool do_circle_animation()
   {
-  
-    // create a new RGB color
     
-    unsigned long start_time = millis();
-    unsigned long last_led_flip_time = millis();
-    byte hue_iteration_move = 4;
-    byte ending_led = 9;
-    bool exit_flag = false;
-    led_working_mem.hsv_color = startup_color_yellow;
-    while (!exit_flag)
+    if (millis() - led_working_mem.last_led_flip_time > led_settings.led_cycle_delay)
     {
-      if (millis() - last_led_flip_time > led_settings.led_cycle_delay)
+      // turn off prior led
+      if (led_working_mem.led_iterator > 0)
       {
-        // turn off prior led
-        if (led_working_mem.led_iterator > 0)
-        {
-          leds[led_working_mem.led_iterator - 1] = CRGB::Black;
-        }
-        leds[led_working_mem.led_iterator] = led_working_mem.hsv_color;
-        
-        FastLED.show();
-        if (led_working_mem.led_iterator == ending_led)
-        {
-          led_working_mem.led_iterator = 0;
-          ending_led--;
-          led_working_mem.hsv_color.hue -= hue_iteration_move;
-        }
-        else
-        {
-          led_working_mem.led_iterator++;
-        }
-        last_led_flip_time = millis();
+        leds[led_working_mem.led_iterator - 1] = CRGB::Black;
       }
+      leds[led_working_mem.led_iterator] = led_working_mem.hsv_color;
       
-      oled_display::cycle_startup_oled_animation();
-      
-      delay(50);
-      if (ending_led == 255)
+      FastLED.show();
+      if (led_working_mem.led_iterator == led_working_mem.ending_led)
       {
-        exit_flag = true;
+        led_working_mem.led_iterator = 0;
+        led_working_mem.ending_led--;
+        led_working_mem.hsv_color.hue -= led_settings.startup_hue_iteration_move;
       }
+      else
+      {
+        led_working_mem.led_iterator++;
+      }
+      led_working_mem.last_led_flip_time = millis();
     }
-  
-  
-    led_working_mem.hsv_color.hue = led_working_mem.hsv_color.hue + (hue_iteration_move * NUM_LEDS);
-    oled_display::clear_display();
-    oled_display::switch_frame();
-  
-    for (int i = 0; i < 3; i++)
+
+      
+    if (led_working_mem.ending_led == 255)
     {
-      int fade_counter = 0;
-      while (fade_counter < 50)
+      led_working_mem.exit_flag = true;
+      for (int i = 0; i < 3; i++)
       {
-        for (int j = NUM_LEDS - 1; j >= 0; j --)
+        for (int j = 0; j < 50; j++)
         {
-          leds[j].setHSV(led_working_mem.hsv_color.hue - (hue_iteration_move * ((NUM_LEDS - 1) - j)), led_working_mem.hsv_color.saturation, led_working_mem.hsv_color.value - fade_counter * 2);
+          FastLED.setBrightness(led_settings.day_mode_brightness - j * 2);
+          FastLED.show();
+          delay(led_settings.led_cycle_delay);
         }
-        FastLED.show();
-        delay(20);
-        fade_counter++;
-      }
-  
-      while (fade_counter >= 0)
-      {
-        for (int j = NUM_LEDS - 1; j >= 0; j --)
+
+        for (int j = 50; j >= 0; j--)
         {
-          leds[j].setHSV(led_working_mem.hsv_color.hue - (hue_iteration_move * ((NUM_LEDS - 1) - j)), led_working_mem.hsv_color.saturation, led_working_mem.hsv_color.value - fade_counter * 2);
+          FastLED.setBrightness(led_settings.day_mode_brightness - j * 2);
+          FastLED.show();
+          delay(led_settings.led_cycle_delay);
         }
-        FastLED.show();
-        delay(20);
-        fade_counter--;
       }
-  
+      FastLED.clear();
+      FastLED.show();
     }
-  
-    FastLED.clear();
-    FastLED.show();
-    oled_display::clear_display();
-    oled_display::switch_frame();
+    return !led_working_mem.exit_flag;
   }
   
   
   void do_mini_celebration()
   {
-    oled_display::display_congrats();
     // pick a starting point for the rainbow
     led_working_mem.hsv_color.hue = random(0, 256);
     led_working_mem.hsv_color.saturation = random(led_settings.min_saturation, led_settings.max_saturation);
