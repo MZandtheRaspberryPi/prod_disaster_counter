@@ -4,7 +4,7 @@
 #include "oled_display.h"
 
 // disaster counter logic
-unsigned int DAYS_COUNTER = 9;
+unsigned int DAYS_COUNTER = 0;
 void handle_button_press(const int& button_state, unsigned int& days_counter);
 
 void setup() {

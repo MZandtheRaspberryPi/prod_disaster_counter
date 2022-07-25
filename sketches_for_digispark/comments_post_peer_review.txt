@@ -1,8 +1,0 @@
-put a 0.1 uF capacitator as close to attiny as possible
-a cap of 0.1uF is sufficient by each led. if problems can upgrade to 2.2.
-when desoldering use temp of heatgun of 360 degrees, ours wont get that hot
-could consider adding a zener diode to the input to protect against overvoltage
-add a 10k resistor betwen reset of attiny to 5v so that it is always high.
-add capacitors for oled. 0.1 and 2.2 uF for stability.
-ground plane on the top and bottom. then could do star or whatever power distribution.
-dont put 5v trace by data trce. min distance is 3x thickness between the two layers.

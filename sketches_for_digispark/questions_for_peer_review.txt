@@ -1,8 +1,0 @@
-questions for review
-
-tips on picking capacitor sizes
-tips on resistor sizes for data lines?
-ok without power management IC?
-tips on de-soldering ics
-tips on soldering mini usb traces
-any idea why library for attiny85 asks for a 0.1uf cap between vcc and gnd? Should i respect that?
