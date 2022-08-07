@@ -3,6 +3,16 @@
 namespace leds
 {
 
+  const static int hue_increment_value = 20;
+  const static CHSV startup_color_yellow( 39, 209, 255);
+
+  static const int NUM_LEDS = 10;
+
+  static led_working_mem_t led_working_mem{};
+  static const led_settings_t led_settings{};
+  static CRGB leds[NUM_LEDS];
+
+
   void setup_leds()
   {
     FastLED.addLeds<WS2812B, pin_mapping::LED_PIN, RGB>(leds, NUM_LEDS);
@@ -54,30 +64,35 @@ namespace leds
     // we will stop at counting 10,0000 digits
     byte ten_thousdands_digit = floor(days_counter / 10000);
     // do tens first, ten thousands last. so that ten thousands overwrites the tens for example.
+    led_working_mem.hsv_color = startup_color_yellow;
     FastLED.clear();
     if (ones_digit > 0)
     {
-      leds[ones_digit - 1] = startup_color_yellow;
+      leds[ones_digit - 1] = led_working_mem.hsv_color;
     }
+    led_working_mem.hsv_color.hue -= hue_increment_value;
     if (tens_digit > 0)
     {
-      leds[tens_digit - 1] = tens_color;
+      leds[tens_digit - 1] = led_working_mem.hsv_color;
     }
+    led_working_mem.hsv_color.hue -= hue_increment_value;    
     if (hundreds_digit > 0)
     {
-      leds[hundreds_digit - 1] = hundreds_color;
+      leds[hundreds_digit - 1] = led_working_mem.hsv_color;
     }
+    led_working_mem.hsv_color.hue -= hue_increment_value;
     if (thousands_digit > 0)
     {
-      leds[thousands_digit - 1] = thousands_color;
+      leds[thousands_digit - 1] = led_working_mem.hsv_color;
     }
+    led_working_mem.hsv_color.hue -= hue_increment_value;
     if (ten_thousdands_digit > 10)
     {
       ten_thousdands_digit = 10;
     }
     if (ten_thousdands_digit > 0)
     {
-      leds[ten_thousdands_digit - 1] = ten_thousands_color;
+      leds[ten_thousdands_digit - 1] = led_working_mem.hsv_color;
     }
     FastLED.show();
   }

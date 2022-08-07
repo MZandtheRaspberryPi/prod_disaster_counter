@@ -2,6 +2,9 @@
 
 namespace buttons
 {
+
+  static button_working_mem_t button_working_mem{};
+  const static button_settings_t button_settings{};
   
   void setup_buttons()
   {

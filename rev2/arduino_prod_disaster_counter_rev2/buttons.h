@@ -21,9 +21,6 @@ namespace buttons
     int button_press_threshold_2 = 10000; // between threshold 1 and this, we will turn on night mode for leds. over this, we will clear counter.
   };
 
-  static button_working_mem_t button_working_mem{};
-  static button_settings_t button_settings{};
-
   void setup_buttons();
   
   int is_button_pressed();

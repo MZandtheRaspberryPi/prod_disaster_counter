@@ -1,6 +1,8 @@
 #ifndef PIN_MAPPING_H
 #define PIN_MAPPING_H
 
+#include <Arduino.h>
+
 namespace pin_mapping 
 {
   
