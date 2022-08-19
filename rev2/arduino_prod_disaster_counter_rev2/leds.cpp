@@ -4,7 +4,7 @@ namespace leds
 {
 
   const static int hue_increment_value = 20;
-  const static CHSV startup_color_yellow( 39, 209, 255);
+  const static CHSV startup_color( 148.75 , 250, 255);
 
   static const int NUM_LEDS = 10;
 
@@ -19,7 +19,7 @@ namespace leds
     FastLED.setBrightness(led_settings.day_mode_brightness);
     FastLED.clear();
     FastLED.show();
-    led_working_mem.hsv_color = startup_color_yellow;
+    led_working_mem.hsv_color = startup_color;
     led_working_mem.night_mode = false;
 
     // this is for the startup led animation
@@ -27,7 +27,7 @@ namespace leds
     led_working_mem.exit_flag = false;
     led_working_mem.start_time = millis();
     led_working_mem.last_led_flip_time = millis();
-    led_working_mem.hsv_color = startup_color_yellow;
+    led_working_mem.hsv_color = startup_color;
     led_working_mem.led_iterator = 0;
     led_working_mem.ending_led = 9;
   }
@@ -64,7 +64,7 @@ namespace leds
     // we will stop at counting 10,0000 digits
     byte ten_thousdands_digit = floor(days_counter / 10000);
     // do tens first, ten thousands last. so that ten thousands overwrites the tens for example.
-    led_working_mem.hsv_color = startup_color_yellow;
+    led_working_mem.hsv_color = startup_color;
     FastLED.clear();
     if (ones_digit > 0)
     {
